@@ -1,0 +1,59 @@
+version: '3.8'
+
+# Test environment configuration
+# Use this for testing, CI/CD, or staging environments
+
+services:
+  db:
+    image: postgres:15
+    container_name: medicare_test_db
+    environment:
+      POSTGRES_DB: medicare_test_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: testpassword
+    volumes:
+      - test_postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"  # Different port to avoid conflicts
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d medicare_test_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - test_network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: medicare_test_app
+    environment:
+      DATABASE_URL: postgresql://postgres:testpassword@db:5432/medicare_test_db
+      JWT_SECRET: test-jwt-secret-key
+      NEXTAUTH_SECRET: test-nextauth-secret
+      NEXTAUTH_URL: http://localhost:3001
+      NODE_ENV: test
+      UPLOAD_DIR: /app/uploads
+      MAX_FILE_SIZE: 10485760
+    ports:
+      - "3001:3000"  # Different port to avoid conflicts
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - test_uploads_data:/app/uploads
+      - /app/node_modules
+    networks:
+      - test_network
+    command: npm run dev
+
+volumes:
+  test_postgres_data:
+    driver: local
+  test_uploads_data:
+    driver: local
+
+networks:
+  test_network:
+    driver: bridge

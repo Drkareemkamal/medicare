@@ -1,0 +1,6 @@
+payroll,Name,DOB,position,department,State,job ID,Blood Group,Special Habit,Note,Chronic Dis,Address,Mob
+EMP001,John Smith,1985-03-15,Software Engineer,IT,California,JOB001,O+,None,Emergency contact: Jane Smith (wife),None,123 Main St, San Francisco, CA 94102,555-0101
+EMP002,Sarah Johnson,1990-07-22,Project Manager,Operations,New York,JOB002,A-,Vegetarian,Emergency contact: Mike Johnson (husband),Asthma,456 Oak Ave, New York, NY 10001,555-0102
+EMP003,Michael Brown,1982-11-08,Data Analyst,Finance,Texas,JOB003,B+,Coffee addict,Emergency contact: Lisa Brown (sister),Diabetes,789 Pine St, Austin, TX 78701,555-0103
+EMP004,Emily Davis,1995-01-30,UX Designer,Design,Florida,JOB004,AB-,Early riser,Emergency contact: Robert Davis (father),None,321 Elm St, Miami, FL 33101,555-0104
+EMP005,David Wilson,1978-09-12,Senior Developer,IT,Washington,JOB005,O-,Tea lover,Emergency contact: Susan Wilson (wife),Hypertension,654 Maple St, Seattle, WA 98101,555-0105

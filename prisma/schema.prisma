@@ -1,0 +1,88 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  EMPLOYEE
+  ADMIN
+}
+
+enum DocumentType {
+  LAB
+  SCAN
+  OTHER
+}
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  passwordHash  String
+  role          Role     @default(EMPLOYEE)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  isActive      Boolean  @default(true)
+
+  profile       EmployeeProfile?
+  documents     MedicalDocument[]
+  auditLogs     AuditLog[]
+
+  @@map("users")
+}
+
+model EmployeeProfile {
+  userId        String   @id
+  payroll       String
+  name          String
+  dob           DateTime
+  position      String
+  department    String
+  state         String
+  jobId         String
+  bloodGroup    String?
+  specialHabit  String?
+  note          String?  // emergency note
+  chronicDisease String?
+  address       String
+  mobile        String
+  photoUrl      String?
+
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("employee_profiles")
+}
+
+model MedicalDocument {
+  id          String       @id @default(cuid())
+  userId      String
+  title       String
+  type        DocumentType
+  fileUrl     String
+  filesize    Int
+  checksum    String
+  uploadedAt  DateTime     @default(now())
+
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("medical_documents")
+}
+
+model AuditLog {
+  id            String   @id @default(cuid())
+  actorUserId   String
+  action        String
+  targetUserId  String?
+  createdAt     DateTime @default(now())
+  details       Json?
+
+  actor         User     @relation(fields: [actorUserId], references: [id])
+
+  @@map("audit_logs")
+}
