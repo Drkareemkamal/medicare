@@ -201,7 +201,7 @@ S3_REGION=us-east-1
 
 1. **Clone the repository**
    ```bash
-   git clone (https://github.com/Drkareemkamal/medicare.git)
+   git clone https://github.com/Drkareemkamal/medicare.git
    cd medicare
    ```
 
